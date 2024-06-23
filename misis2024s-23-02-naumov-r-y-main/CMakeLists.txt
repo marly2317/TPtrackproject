@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(naumov-r-y-23-02)
+
+set(CMAKE_CXX_STANDARD 20)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "cmake")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG bin.dbg)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE bin.rel)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO bin.relwithdbg)
+
+option(BUILD_WITH_SAMPLES "Build prj.cw sample targets")
+set(BUILD_WITH_SAMPLES ON)
+
+option(BUILD_VOXEL_CRAFT "Builds VoxelCraft instead of opengltest")
+set(BUILD_VOXEL_CRAFT OFF)
+
+add_subdirectory(prj.codeforces)
+
+add_subdirectory(prj.lab)
+
+add_subdirectory(prj.test)
+
+add_subdirectory(prj.application)
+

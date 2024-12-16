@@ -34,7 +34,6 @@ mpl.rcParams["figure.figsize"] = (20, 5)
 
 mpl.rcParams["figure.dpi"] = 100
 
-
 category_df = df.query("label == 'squat'").query("participant == 'A'").reset_index()
 
 flag,ax=plt.subplots()

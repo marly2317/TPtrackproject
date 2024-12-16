@@ -2,26 +2,16 @@ import pandas as pd
 from glob import glob
 from pathlib import Path
 
-# --------------------------------------------------------------
-# Read single CSV file
-# --------------------------------------------------------------
 
-# Загрузка данных для акселерометра
 single_file_acc = pd.read_csv("../../data/raw/MetaMotion/A-bench-heavy2-rpe8_MetaWear_2019-01-11T16.10.08.270_C42732BE255C_Accelerometer_12.500Hz_1.4.4.csv")
 
-# Загрузка данных для гироскопа
 single_file_gyr = pd.read_csv("../../data/raw/MetaMotion/A-bench-heavy2-rpe8_MetaWear_2019-01-11T16.10.08.270_C42732BE255C_Gyroscope_25.000Hz_1.4.4.csv")
 
-# --------------------------------------------------------------
-# List all data in data/raw/MetaMotion
-# --------------------------------------------------------------
 
 files = glob("../../data/raw/MetaMotion/*.csv")
 len(files)
 
-# --------------------------------------------------------------
-# Extract features from filename
-# --------------------------------------------------------------
+
 def read_data_from_files(files):
     data_path = "../../data/raw/MetaMotion/"
 
@@ -55,10 +45,7 @@ def read_data_from_files(files):
             gyr_set += 1
     
         
-        
-    # --------------------------------------------------------------
-    # Working with datetimes
-    # --------------------------------------------------------------
+
     pd.to_datetime(df["epoch (ms)"],unit="ms")
     pd.to_datetime(df["time (01:00)"]).dt.month
     acc_df.index = pd.to_datetime(acc_df["epoch (ms)"], unit="ms")
@@ -76,9 +63,7 @@ acc_df,gyr_df=read_data_from_files(files)
 
 
 
-# --------------------------------------------------------------
-# Merging datasets
-# --------------------------------------------------------------
+
 data_merged=pd.concat([acc_df.iloc[:,:3],gyr_df],axis=1)
 data_merged.head(50)
 
@@ -94,11 +79,9 @@ data_merged.columns = [
     "category",
     "set",
 ]
-# --------------------------------------------------------------
-# Resample data (frequency conversion)
-# --------------------------------------------------------------
+
+
 days = [g for n, g in data_merged.groupby(pd.Grouper(freq="D"))] 
-# Определяем словарь для передискретизации
 sampling = {
     "acc_x": "mean",
     "acc_y": "mean",
@@ -120,7 +103,5 @@ data_resampled = pd.concat([df.resample(rule='200ms').apply(sampling).dropna() f
 # Gyroscope:        25.000Hz
 data_resampled["set"]=data_resampled["set"].astype("int")
 data_resampled.info()
-# --------------------------------------------------------------
-# Export dataset
-# --------------------------------------------------------------
+
 data_resampled.to_pickle("../../data/interim/01_data_processed.pkl")

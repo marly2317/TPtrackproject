@@ -1,1 +1,0 @@
-# misis2024s-23-02-naumov-r-y
